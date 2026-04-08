@@ -1,28 +1,20 @@
 import { useEffect, useRef, useState } from "react";
-import Hls from "hls.js";
 import gsap from "gsap";
 
 const ROLES = ["Creative", "Fullstack", "Founder", "Scholar"];
-const HLS_URL =
-  "https://stream.mux.com/Aa02T7oM1wH5Mk5EEVDYhbZ1ChcdhRsS2m1NYyx4Ua1g.m3u8";
+const VIDEO_URL =
+  "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260322_013248_a74099a8-be2b-4164-a823-eddd5e149fa1.mp4";
 
 const HeroSection = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
   const [roleIndex, setRoleIndex] = useState(0);
 
-  // HLS video setup
+  // Video setup
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
-    if (Hls.isSupported()) {
-      const hls = new Hls();
-      hls.loadSource(HLS_URL);
-      hls.attachMedia(video);
-      return () => hls.destroy();
-    } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
-      video.src = HLS_URL;
-    }
+    video.src = VIDEO_URL;
   }, []);
 
   // Role cycling
