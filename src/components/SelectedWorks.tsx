@@ -51,7 +51,7 @@ const SelectedWorks = () => (
           <motion.div
             key={project.title}
             {...fadeInView}
-            transition={{ ...fadeInView.transition, delay: i * 0.1 }}
+            transition={{ duration: 1, ease: [0.25, 0.1, 0.25, 1] as const, delay: i * 0.1 }}
             className={`${project.span} group relative overflow-hidden rounded-3xl bg-surface border border-stroke cursor-pointer`}
           >
             <div className={`relative ${project.aspect} overflow-hidden`}>

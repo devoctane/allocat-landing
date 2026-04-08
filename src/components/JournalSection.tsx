@@ -43,7 +43,7 @@ const JournalSection = () => (
           <motion.article
             key={entry.title}
             {...fadeInView}
-            transition={{ ...fadeInView.transition, delay: i * 0.08 }}
+            transition={{ duration: 1, ease: [0.25, 0.1, 0.25, 1] as const, delay: i * 0.08 }}
             className="flex items-center gap-6 p-4 rounded-[40px] sm:rounded-full bg-surface/30 hover:bg-surface border border-stroke transition-all duration-300 cursor-pointer group"
           >
             <div className="w-12 h-12 rounded-full bg-stroke/50 flex-shrink-0 flex items-center justify-center">
