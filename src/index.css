@@ -4,15 +4,15 @@
 
 @layer base {
   :root {
+    /* Monochrome palette — pure black & white */
     --bg: 0 0% 4%;
     --surface: 0 0% 8%;
     --text: 0 0% 96%;
-    --muted: 0 0% 53%;
-    --stroke: 0 0% 12%;
-    --accent: 0 0% 96%;
+    --muted: 0 0% 50%;
+    --stroke: 0 0% 13%;
 
     --font-body: 'Inter', sans-serif;
-    --font-display: 'Instrument Serif', serif;
+    --font-display: 'Outfit', sans-serif;
 
     --background: 0 0% 4%;
     --foreground: 0 0% 96%;
@@ -24,25 +24,16 @@
     --primary-foreground: 0 0% 4%;
     --secondary: 0 0% 12%;
     --secondary-foreground: 0 0% 96%;
-    --muted-color: 0 0% 53%;
-    --muted-foreground: 0 0% 53%;
+    --muted-color: 0 0% 50%;
+    --muted-foreground: 0 0% 50%;
     --accent-color: 0 0% 96%;
     --accent-foreground: 0 0% 4%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 96%;
-    --border: 0 0% 12%;
-    --input: 0 0% 12%;
-    --ring: 0 0% 96%;
-    --radius: 0.5rem;
-
-    --sidebar-background: 0 0% 6%;
-    --sidebar-foreground: 0 0% 96%;
-    --sidebar-primary: 0 0% 96%;
-    --sidebar-primary-foreground: 0 0% 4%;
-    --sidebar-accent: 0 0% 12%;
-    --sidebar-accent-foreground: 0 0% 96%;
-    --sidebar-border: 0 0% 12%;
-    --sidebar-ring: 0 0% 96%;
+    --border: 0 0% 13%;
+    --input: 0 0% 13%;
+    --ring: 0 0% 60%;
+    --radius: 0.75rem;
   }
 }
 
@@ -55,36 +46,54 @@
     @apply bg-bg text-text-primary antialiased;
   }
   html {
-    scroll-behavior: smooth;
+    scroll-behavior: auto; /* Lenis handles smooth scroll */
   }
 }
 
-/* Accent gradient utility */
+/* Monochrome gradient — white shimmer only */
 .accent-gradient {
-  background: linear-gradient(90deg, #89AACC 0%, #4E85BF 100%);
+  background: linear-gradient(90deg, #ffffff 0%, #a1a1a1 100%);
 }
 
-.accent-gradient-reverse {
-  background: linear-gradient(90deg, #4E85BF 0%, #89AACC 100%);
+.gradient-text {
+  background-image: linear-gradient(90deg, #ffffff 0%, #a1a1a1 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
 }
 
 /* Custom animations */
 @keyframes scroll-down {
-  0% { transform: translateY(-100%); opacity: 0; }
-  30% { opacity: 1; }
-  70% { opacity: 1; }
+  0%   { transform: translateY(-100%); opacity: 0; }
+  30%  { opacity: 1; }
+  70%  { opacity: 1; }
   100% { transform: translateY(200%); opacity: 0; }
 }
 
 @keyframes role-fade-in {
-  0% { opacity: 0; transform: translateY(8px); }
+  0%   { opacity: 0; transform: translateY(8px); }
   100% { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes gradient-shift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-10px); }
+}
+
+@keyframes pulse-ring {
+  0%   { transform: scale(1); opacity: 0.5; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
 .animate-scroll-down {
@@ -95,7 +104,11 @@
   animation: role-fade-in 0.4s ease-out;
 }
 
-.animate-gradient-shift {
-  background-size: 200% 200%;
-  animation: gradient-shift 6s ease infinite;
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background-size: 200% 100%;
+  animation: shimmer 2s linear infinite;
 }

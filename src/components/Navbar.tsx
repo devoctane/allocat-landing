@@ -1,100 +1,133 @@
 import { useState, useEffect } from "react";
+import { Github } from "lucide-react";
 
-const NAV_LINKS = ["Home", "Work", "Resume"];
+const NAV_LINKS = [
+  { label: "Features", target: "features" },
+  { label: "How It Works", target: "how-it-works" },
+  { label: "Contribute", target: "contribute" },
+];
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
-  const [active, setActive] = useState("Home");
-  const [hoverSayHi, setHoverSayHi] = useState(false);
-  const [hoverLogo, setHoverLogo] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 100);
+    const onScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const handleNav = (link: string) => {
-    setActive(link);
-    const sectionMap: Record<string, string> = {
-      Home: "hero",
-      Work: "works",
-      Resume: "stats",
-    };
-    const el = document.getElementById(sectionMap[link]);
+  const handleNav = (target: string) => {
+    setMobileOpen(false);
+    const el = document.getElementById(target);
     el?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-4 md:pt-6 px-4">
-      <div
-        className={`inline-flex items-center rounded-full backdrop-blur-md border border-white/10 bg-surface px-2 py-2 transition-shadow duration-300 ${
-          scrolled ? "shadow-md shadow-black/10" : ""
+    <>
+      <nav
+        id="main-nav"
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${
+          scrolled
+            ? "bg-bg/30 backdrop-blur-xl border-white/[0.08] shadow-lg shadow-black/20 py-4"
+            : "bg-transparent border-transparent py-6"
         }`}
       >
-        {/* Logo */}
-        <button
-          onMouseEnter={() => setHoverLogo(true)}
-          onMouseLeave={() => setHoverLogo(false)}
-          className="relative w-9 h-9 rounded-full p-[2px] transition-transform duration-300 hover:scale-110"
-          style={{
-            background: hoverLogo
-              ? "linear-gradient(270deg, #89AACC 0%, #4E85BF 100%)"
-              : "linear-gradient(90deg, #89AACC 0%, #4E85BF 100%)",
-          }}
-          onClick={() => handleNav("Home")}
-        >
-          <span className="flex items-center justify-center w-full h-full rounded-full bg-bg font-display italic text-[13px] text-text-primary">
-            JA
-          </span>
-        </button>
-
-        {/* Divider */}
-        <span className="hidden sm:block w-px h-5 bg-stroke mx-1" />
-
-        {/* Nav links */}
-        {NAV_LINKS.map((link) => (
+        <div className="w-full max-w-[1200px] mx-auto flex items-center justify-between px-6 md:px-10 lg:px-16">
+          {/* Logo */}
           <button
-            key={link}
-            onClick={() => handleNav(link)}
-            className={`text-xs sm:text-sm rounded-full px-3 sm:px-4 py-1.5 sm:py-2 transition-all duration-200 ${
-              active === link
-                ? "text-text-primary bg-stroke/50"
-                : "text-muted hover:text-text-primary hover:bg-stroke/50"
-            }`}
+            onClick={() => handleNav("hero")}
+            className="flex items-center gap-2.5 hover:opacity-70 transition-opacity"
           >
-            {link}
+            <img src="/allocat.png" alt="Allocat" className="h-7 w-7 invert" />
+            <span className="text-base font-display font-bold text-text-primary tracking-wide">
+              allocat
+            </span>
           </button>
-        ))}
 
-        {/* Divider */}
-        <span className="hidden sm:block w-px h-5 bg-stroke mx-1" />
+          {/* Desktop nav links */}
+          <div className="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
+            {NAV_LINKS.map((link) => (
+              <button
+                key={link.label}
+                onClick={() => handleNav(link.target)}
+                className="text-sm font-medium text-muted hover:text-text-primary transition-colors"
+              >
+                {link.label}
+              </button>
+            ))}
+          </div>
 
-        {/* Say hi */}
-        <button
-          className="relative text-xs sm:text-sm rounded-full px-3 sm:px-4 py-1.5 sm:py-2 text-text-primary transition-all duration-200"
-          onMouseEnter={() => setHoverSayHi(true)}
-          onMouseLeave={() => setHoverSayHi(false)}
-          onClick={() => {
-            window.location.href = "mailto:hello@michaelsmith.com";
-          }}
-        >
-          {hoverSayHi && (
-            <span
-              className="absolute inset-[-2px] rounded-full animate-gradient-shift"
-              style={{
-                background:
-                  "linear-gradient(90deg, #89AACC, #4E85BF, #89AACC)",
-                backgroundSize: "200% 200%",
-              }}
-            />
-          )}
-          <span className="relative z-10 flex items-center gap-1 bg-surface rounded-full px-3 py-1 backdrop-blur-md">
-            Say hi <span>↗</span>
-          </span>
-        </button>
-      </div>
-    </nav>
+          {/* Desktop CTAs */}
+          <div className="hidden md:flex items-center gap-6">
+            <a
+              href="https://github.com/devoctane/allocat"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-muted hover:text-text-primary transition-colors"
+              title="View on GitHub"
+            >
+              <Github className="w-5 h-5" />
+            </a>
+            <a
+              href="https://allocat.xyz"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm rounded-full px-6 py-2.5 bg-text-primary text-bg font-semibold transition-all duration-300 hover:opacity-80 hover:scale-105"
+            >
+              Try Allocat
+            </a>
+          </div>
+
+          {/* Mobile hamburger */}
+          <button
+            className="md:hidden flex flex-col gap-1.5 p-2"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label="Toggle menu"
+          >
+            <span className={`block w-5 h-[2px] bg-text-primary transition-all duration-300 origin-center ${mobileOpen ? "rotate-45 translate-y-[8px]" : ""}`} />
+            <span className={`block w-5 h-[2px] bg-text-primary transition-all duration-300 ${mobileOpen ? "opacity-0" : ""}`} />
+            <span className={`block w-5 h-[2px] bg-text-primary transition-all duration-300 origin-center ${mobileOpen ? "-rotate-45 -translate-y-[8px]" : ""}`} />
+          </button>
+        </div>
+      </nav>
+
+      {/* Mobile menu */}
+      {mobileOpen && (
+        <div className="fixed inset-0 z-40 bg-bg/98 backdrop-blur-xl flex flex-col items-center justify-center gap-8 pt-20">
+          {NAV_LINKS.map((link) => (
+            <button
+              key={link.label}
+              onClick={() => handleNav(link.target)}
+              className="text-2xl font-display font-semibold text-text-primary hover:text-muted transition-colors"
+            >
+              {link.label}
+            </button>
+          ))}
+          <div className="flex flex-col items-center gap-4 mt-4">
+            <a
+              href="https://github.com/devoctane/allocat"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-base text-muted hover:text-text-primary transition-colors"
+              onClick={() => setMobileOpen(false)}
+            >
+              <Github className="w-5 h-5" />
+              GitHub
+            </a>
+            <a
+              href="https://allocat.xyz"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-lg rounded-full px-8 py-3.5 bg-text-primary text-bg font-semibold transition-all duration-300 hover:opacity-80"
+              onClick={() => setMobileOpen(false)}
+            >
+              Try Allocat
+            </a>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
