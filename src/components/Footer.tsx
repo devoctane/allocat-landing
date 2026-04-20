@@ -3,8 +3,16 @@ import gsap from "gsap";
 import { Github } from "lucide-react";
 
 const FOOTER_LINKS = {
-  Product: ["Features", "How It Works", "Contribute"],
-  Resources: ["GitHub", "Privacy", "Terms"],
+  Product: [
+    { label: "Features", href: "#features" },
+    { label: "How It Works", href: "#how-it-works" },
+    { label: "Contribute", href: "#contribute" },
+  ],
+  Resources: [
+    { label: "GitHub", href: "https://github.com/devoctane/allocat" },
+    { label: "Privacy", href: "#" },
+    { label: "Terms", href: "#" },
+  ],
 };
 
 const Footer = () => {
@@ -76,16 +84,19 @@ const Footer = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-10 mb-16 border-t border-stroke pt-12">
             {/* Logo column */}
             <div className="col-span-2">
-              <div className="flex items-center gap-2.5 mb-4">
+              <a
+                href="#hero"
+                className="flex items-center gap-2.5 mb-4 group w-fit"
+              >
                 <img
                   src="/allocat.png"
                   alt="Allocat"
-                  className="h-8 w-8 invert"
+                  className="h-8 w-8 invert group-hover:opacity-70 transition-opacity"
                 />
-                <span className="text-lg font-display font-bold text-text-primary">
+                <span className="text-lg font-display font-bold text-text-primary group-hover:text-muted transition-colors">
                   allocat
                 </span>
-              </div>
+              </a>
               <p className="text-sm text-muted max-w-xs leading-relaxed mb-6">
                 A free, open-source personal finance app. Plan your money. Live
                 your life.
@@ -110,12 +121,14 @@ const Footer = () => {
                 </h4>
                 <ul className="space-y-3">
                   {links.map((link) => (
-                    <li key={link}>
+                    <li key={link.label}>
                       <a
-                        href="#"
+                        href={link.href}
+                        target={link.href.startsWith("http") ? "_blank" : undefined}
+                        rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
                         className="text-sm text-muted hover:text-text-primary transition-colors"
                       >
-                        {link}
+                        {link.label}
                       </a>
                     </li>
                   ))}
@@ -127,7 +140,16 @@ const Footer = () => {
           {/* Bottom bar */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-stroke pt-8">
             <span className="text-xs text-muted">
-              © 2026 Allocat. Open source under MIT.
+              Built by © {new Date().getFullYear()}{" "}
+              <a
+                href="https://www.devoctane.in/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-text-primary transition-colors hover:underline"
+              >
+                Octane Innovations
+              </a>
+              . Open source under MIT.
             </span>
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-white/40 animate-pulse" />

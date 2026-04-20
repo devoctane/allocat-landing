@@ -49,6 +49,16 @@ const features = [
   },
 ];
 
+// Screenshots captured at 1000×1558px — portrait mobile ratio ~1:1.558
+const featureImages = [
+  "/budget.png",    // Budget Management
+  "/dashboard.png", // Quick Spend Logging
+  "/netWorth.png",  // Net Worth Tracking
+  "/fingoals.png",  // Financial Goals
+  "/dept.png",      // Debt & Lent Money
+  "/ai.png",        // AlloCat AI
+];
+
 const FeaturesSection = () => {
   const [activeFeature, setActiveFeature] = useState(0);
 
@@ -73,80 +83,84 @@ const FeaturesSection = () => {
 
         {/* Sticky Scroll Layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-20 items-start relative">
-          
-          {/* Left Column: Sticky Container (Hidden on mobile) */}
+
+          {/* Left Column: Sticky phone mockup (hidden on mobile) */}
           <div className="hidden md:flex sticky top-10 h-screen items-center justify-center pl-4 pb-20">
-            <div className="w-full aspect-[4/5] bg-surface border border-stroke rounded-[2rem] p-4 relative overflow-hidden shadow-2xl shadow-black/50">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeFeature}
-                  initial={{ opacity: 0, y: 20, filter: "blur(4px)" }}
-                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                  exit={{ opacity: 0, y: -20, filter: "blur(4px)" }}
-                  transition={{ duration: 0.4, ease: "easeOut" }}
-                  className="absolute inset-4 rounded-[1.5rem] bg-bg border border-stroke flex items-center justify-center p-8 bg-grid-white/[0.02]"
-                >
-                  <div className="text-center">
-                    <div className="w-16 h-16 rounded-2xl bg-white/[0.04] border border-white/[0.05] flex items-center justify-center mx-auto mb-6">
-                      {(() => {
-                        const Icon = features[activeFeature].icon;
-                        return <Icon className="w-8 h-8 text-text-primary/70" />;
-                      })()}
-                    </div>
-                    <p className="text-xs text-muted/40 uppercase tracking-[0.2em] mb-3">
-                      Screenshot Placeholder
-                    </p>
-                    <p className="text-lg font-display font-bold text-text-primary">
-                      {features[activeFeature].title}
-                    </p>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
+            {/*
+              Phone shell — sized to exactly match the screenshot's 1000×1558 ratio.
+              w-[260px] → height = 260 × (1558/1000) ≈ 405px. Fits comfortably in viewport.
+            */}
+            <div
+              className="relative top-5 bg-[#0a0a0a] border-[3px] border-white/[0.10] rounded-[2.5rem] overflow-hidden shadow-[0_0_0_1px_rgba(255,255,255,0.04),0_48px_100px_-10px_rgba(0,0,0,0.85)]"
+              style={{ width: "320px", aspectRatio: "1000 / 2000" }}
+            >
+              {/* Dynamic island / notch */}
+              <div className="absolute top-3 left-1/2 -translate-x-1/2 w-20 h-5 bg-black rounded-full z-20" />
+
+              {/* Screenshot with cross-fade */}
+              <div className="absolute inset-0 overflow-hidden rounded-[2.25rem]">
+                <AnimatePresence mode="wait">
+                  <motion.img
+                    key={activeFeature}
+                    src={featureImages[activeFeature]}
+                    alt={features[activeFeature].title}
+                    initial={{ opacity: 0, y: 14, filter: "blur(6px)" }}
+                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                    exit={{ opacity: 0, y: -14, filter: "blur(6px)" }}
+                    transition={{ duration: 0.45, ease: "easeOut" }}
+                    className="absolute inset-0 w-full h-full object-cover object-top"
+                  />
+                </AnimatePresence>
+              </div>
+
+              {/* Glare */}
+              <div className="pointer-events-none absolute inset-0 rounded-[2.25rem] bg-gradient-to-br from-white/[0.05] via-transparent to-transparent z-10" />
             </div>
           </div>
 
-          {/* Right Column: Scrolling Text blocks */}
+          {/* Right Column: Scrolling text blocks */}
           <div className="flex flex-col py-10 md:py-[20vh] relative z-10 space-y-24 md:space-y-0">
             {features.map((feature, i) => (
               <motion.div
                 key={i}
-                // Trigger feature activation when the text block's middle enters the middle 20% of the viewport height.
                 onViewportEnter={() => setActiveFeature(i)}
                 viewport={{ margin: "-40% 0px -40% 0px", amount: "some" }}
                 className="md:min-h-[80vh] flex flex-col justify-center"
               >
-                {/* Mobile top structural line */}
+                {/* Mobile divider */}
                 <div className="md:hidden w-full h-px bg-stroke mb-8" />
 
                 <div className="flex items-center gap-4 mb-6">
-                  {/* Icon */}
                   <div className="w-14 h-14 rounded-2xl bg-white/[0.06] border border-white/[0.08] flex items-center justify-center shrink-0">
                     <feature.icon className="w-6 h-6 text-text-primary/70" />
                   </div>
-                  {/* Number tag */}
                   <span className="text-[10px] font-bold uppercase tracking-widest text-muted/50 font-display">
                     Feature 0{i + 1}
                   </span>
                 </div>
 
-                {/* Title */}
                 <h3 className="text-3xl lg:text-4xl font-display font-bold text-text-primary mb-4 transition-colors duration-300">
                   {feature.title}
                 </h3>
 
-                {/* Description */}
                 <p className="text-base text-muted leading-relaxed">
                   {feature.description}
                 </p>
 
-                {/* Mobile-only Image Fallback */}
-                <div className="md:hidden mt-10 w-full aspect-[4/3] bg-surface border border-stroke rounded-[2rem] flex flex-col items-center justify-center p-6 shadow-xl">
-                    <div className="w-12 h-12 rounded-xl bg-white/[0.04] border border-white/[0.05] flex items-center justify-center mb-4">
-                      <feature.icon className="w-6 h-6 text-text-primary/50" />
-                    </div>
-                  <span className="text-[10px] text-muted/40 uppercase tracking-[0.2em]">
-                    Screenshot
-                  </span>
+                {/* Mobile-only phone mockup */}
+                <div
+                  className="md:hidden mt-10 mx-auto relative bg-[#0a0a0a] border-[3px] border-white/[0.10] rounded-[2.5rem] overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.7)]"
+                  style={{ width: "200px", aspectRatio: "1000 / 2000" }}
+                >
+                  <div className="absolute top-2 left-1/2 -translate-x-1/2 w-16 h-4 bg-black rounded-full z-20" />
+                  <div className="absolute inset-0 overflow-hidden rounded-[2.25rem]">
+                    <img
+                      src={featureImages[i]}
+                      alt={feature.title}
+                      className="absolute inset-0 w-full h-full object-cover object-top"
+                    />
+                  </div>
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/[0.05] via-transparent to-transparent" />
                 </div>
               </motion.div>
             ))}
