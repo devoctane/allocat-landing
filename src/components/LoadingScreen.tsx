@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
-const WORDS = ["Track", "Budget", "Grow"];
-const DURATION = 2700;
+const WORDS = ["Track", "Budget", "Grow", "logo"];
+const DURATION = 3600;
 
 interface LoadingScreenProps {
   onComplete: () => void;
@@ -17,7 +17,7 @@ const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setWordIndex((i) => (i + 1) % WORDS.length);
+      setWordIndex((i) => Math.min(i + 1, WORDS.length - 1));
     }, 900);
     return () => clearInterval(interval);
   }, []);
@@ -71,16 +71,29 @@ const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
           {/* Center — rotating word */}
           <div className="flex-1 flex items-center justify-center">
             <AnimatePresence mode="wait">
-              <motion.span
-                key={wordIndex}
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -20, opacity: 0 }}
-                transition={{ duration: 0.3, ease: "easeOut" }}
-                className="text-4xl md:text-6xl lg:text-7xl font-display font-bold text-text-primary/80"
-              >
-                {WORDS[wordIndex]}
-              </motion.span>
+              {WORDS[wordIndex] === "logo" ? (
+                <motion.img
+                  key="logo"
+                  src="/allocat.png"
+                  alt="Allocat Logo"
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 1.1, opacity: 0 }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                  className="w-24 h-24 md:w-32 md:h-32 invert"
+                />
+              ) : (
+                <motion.span
+                  key={wordIndex}
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: -20, opacity: 0 }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                  className="text-4xl md:text-6xl lg:text-7xl font-display font-bold text-text-primary/80"
+                >
+                  {WORDS[wordIndex]}
+                </motion.span>
+              )}
             </AnimatePresence>
           </div>
 
