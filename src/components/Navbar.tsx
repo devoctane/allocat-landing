@@ -70,7 +70,7 @@ const Navbar = () => {
               <Github className="w-5 h-5" />
             </a>
             <a
-              href="https://allocat.xyz"
+              href="https://allocat.xyz/auth/login"
               target="_blank"
               rel="noopener noreferrer"
               className="text-sm rounded-full px-6 py-2.5 bg-text-primary text-bg font-semibold transition-all duration-300 hover:opacity-80 hover:scale-105"
@@ -116,7 +116,7 @@ const Navbar = () => {
               GitHub
             </a>
             <a
-              href="https://allocat.xyz"
+              href="https://allocat.xyz/auth/login"
               target="_blank"
               rel="noopener noreferrer"
               className="text-lg rounded-full px-8 py-3.5 bg-text-primary text-bg font-semibold transition-all duration-300 hover:opacity-80"

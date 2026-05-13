@@ -60,7 +60,7 @@ const Footer = () => {
           </p>
           <div className="inline-flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="https://allocat.xyz"
+              href="https://allocat.xyz/auth/login"
               target="_blank"
               rel="noopener noreferrer"
               className="rounded-2xl text-sm md:text-base px-10 py-4 bg-text-primary text-bg font-semibold transition-all duration-300 hover:opacity-80 hover:scale-105"
